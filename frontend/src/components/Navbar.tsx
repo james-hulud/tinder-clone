@@ -9,7 +9,7 @@ const Navbar = () => {
         <label htmlFor="check" className="checkbtn">
             <i className="fa-solid fa-bars"></i>
         </label>
-        <label className="logo">MindWriter</label>
+        <label className="logo">RF-date</label>
         <ul>
             <li><Link to="/">Home</Link></li>
             <li><Link to="/about">About</Link></li>

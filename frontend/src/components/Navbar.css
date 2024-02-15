@@ -11,7 +11,7 @@ body{
 }
 
 nav{
-    background-image: linear-gradient(rgb(35, 163, 237), rgb(150, 231, 245));
+    background-image: linear-gradient(rgb(228, 27, 23), rgb(248, 127, 127));
     height: 100px;
     width: 100%;
 }
@@ -50,6 +50,7 @@ label.logo{
 
 .logo{
     font-family: 'Lato', sans-serif;
+    float: left;
 }
 
 .checkbtn{
