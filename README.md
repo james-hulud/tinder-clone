@@ -1,2 +1,2 @@
-# rf-date
-A dating app created using REACT and Flask
+# tinder-clone
+A dating app created using REACT
