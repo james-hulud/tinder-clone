@@ -5,7 +5,7 @@ import { IconButton } from "@mui/material";
 
 const Header = () => {
   return (
-    <div className="flex justify-between w-full border-b border-gray-100 items-center">
+    <div className="flex justify-between w-full border-b border-gray-100 items-center py-5">
       <div className="pl-10">
         <IconButton>
           <PersonIcon fontSize="large" />
