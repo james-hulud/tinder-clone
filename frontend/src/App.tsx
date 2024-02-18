@@ -1,19 +1,18 @@
 import "./App.css";
 import Header from "./components/Header";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Homepage from "./pages/Homepage";
-import Chat from "./pages/Chat";
+import Chats from "./pages/Chats";
 
 function App() {
   return (
     <div className="App">
-      <Header />
-      <BrowserRouter>
+      <Router>
         <Routes>
-          <Route path="/chat" element={<Chat />} />
+          <Route path="/chats" element={<Chats />} />
           <Route path="/" element={<Homepage />} />
         </Routes>
-      </BrowserRouter>
+      </Router>
     </div>
   );
 }

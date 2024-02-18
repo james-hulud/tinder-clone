@@ -8,20 +8,20 @@ import { IconButton } from "@mui/material";
 
 const SwipeButtons = () => {
   return (
-    <div className="flex fixed bottom-[5vh] justify-evenly w-full swipeButtons">
+    <div className="flex fixed bottom-[5vh] justify-evenly w-full swipeButtons ">
       <IconButton className="swipeButtons__repeat">
         <ReplayIcon fontSize="large" />
       </IconButton>
-      <IconButton className="swipeButtons__repeat">
+      <IconButton className="swipeButtons__left">
         <CloseIcon fontSize="large" />
       </IconButton>
-      <IconButton className="swipeButtons__repeat">
+      <IconButton className="swipeButtons__star">
         <StarRateIcon fontSize="large" />
       </IconButton>
-      <IconButton className="swipeButtons__repeat">
+      <IconButton className="swipeButtons__right">
         <FavoriteIcon fontSize="large" />
       </IconButton>
-      <IconButton className="swipeButtons__repeat">
+      <IconButton className="swipeButtons__lightning">
         <FlashOnIcon fontSize="large" />
       </IconButton>
     </div>
