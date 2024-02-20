@@ -20,12 +20,12 @@ const Header: React.FC<HeaderProps> = ({ backButton }) => {
             <ArrowBackIosIcon fontSize="large" />
           </IconButton>
         ) : (
-          <IconButton>
+          <IconButton onClick={() => navigate("/account")}>
             <PersonIcon fontSize="large" />
           </IconButton>
         )}
       </div>
-      <Link to={"/"}>
+      <Link to={"/home"}>
         <img
           className="object-contain h-10"
           src="https://seeklogo.com/images/T/tinder-logo-FAAE852EC0-seeklogo.com.png"

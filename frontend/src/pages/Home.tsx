@@ -3,7 +3,7 @@ import TinderCards from "../components/TinderCards";
 import SwipeButtons from "../components/SwipeButtons";
 import Header from "../components/Header";
 
-const Homepage = () => {
+const Home = () => {
   return (
     <div>
       <Header />
@@ -13,4 +13,4 @@ const Homepage = () => {
   );
 };
 
-export default Homepage;
+export default Home;

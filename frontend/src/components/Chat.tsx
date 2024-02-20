@@ -15,13 +15,14 @@ const Chat: React.FC<chatProps> = ({
   timestamp,
 }) => {
   return (
-    // At 2:45:13
-    <div>
+    // At 2:50:30
+    <div className="flex items-center justify-between p-20">
       <Avatar className="" alt={name} src={profilePic} />
-      <div>
+      <div className="" >
         <h2>{name}</h2>
         <p>{message}</p>
       </div>
+      <p className="" >{timestamp}</p>
     </div>
   );
 };
