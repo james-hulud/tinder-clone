@@ -14,16 +14,20 @@ const Login = () => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
-    signInWithEmailAndPassword(database, email, password)
-      .then((data) => {
-        console.log(data, "authData");
-        navigate("/Home");
-        alert("Welcome to your home page!");
-      })
-      .catch(function (error) {
-        alert("Error");
-        console.log(error);
-      });
+    if (email.length === 0 || password.length === 0) {
+      alert("Error: email or password field is empty.");
+    } else {
+      signInWithEmailAndPassword(database, email, password)
+        .then((data) => {
+          console.log(data, "authData");
+          navigate("/home");
+          alert("Logged in!");
+        })
+        .catch(function (error) {
+          alert("Error");
+          console.log(error);
+        });
+    }
   };
 
   let imgs = [
@@ -44,7 +48,7 @@ const Login = () => {
         <div className="flex flex-col py-[5vh]">
           <input
             name="email"
-            placeholder="Example@example.com"
+            placeholder="example@example.com"
             className="outline-none outline-black rounded-md"
           />
           <label htmlFor="formEmail">Email address</label>
@@ -53,7 +57,7 @@ const Login = () => {
           <input
             name="password"
             type="password"
-            placeholder="Password"
+            placeholder="password"
             className="outline-none outline-black rounded-md"
           />
           <label htmlFor="formPassword">Password</label>

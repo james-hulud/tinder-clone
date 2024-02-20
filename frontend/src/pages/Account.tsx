@@ -1,18 +1,32 @@
-import React from "react";
-import { signOut } from "firebase/auth";
+import React, { useState } from "react";
+import { signOut, onAuthStateChanged } from "firebase/auth";
 import { database } from "../firebase";
 import { useNavigate } from "react-router-dom";
 
 const Account = () => {
   const navigate = useNavigate();
+  //   const [auth, setAuth] = useState(false);
 
   const handleClick = () => {
     signOut(database)
-      .then(() => navigate("/"))
+      .then(() => {
+        navigate("/");
+        alert("Signed out!");
+      })
       .catch((error) => {
         console.log(error);
       });
   };
+
+  // Checks if user is logged in, if not navigates them to log in
+  //   onAuthStateChanged(database, (user) => {
+  //     if (user) {
+  //       setAuth(true);
+  //     } else {
+  //       setAuth(false);
+  //       navigate("/");
+  //     }
+  //   });
 
   return (
     <div>
