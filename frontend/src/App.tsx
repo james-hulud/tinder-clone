@@ -15,6 +15,7 @@ function App() {
   const [isFetching, setIsFetching] = useState(true);
 
   useEffect(() => {
+    // console.log("useEffect() running!");
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser(user);

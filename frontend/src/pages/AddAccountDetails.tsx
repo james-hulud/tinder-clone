@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
-import { Timestamp, addDoc, collection } from "firebase/firestore";
-import db from "../firebase";
 
 const Register = ({ user }: any) => {
   const [email, setEmail] = useState("");
@@ -11,6 +9,7 @@ const Register = ({ user }: any) => {
 
   const navigate = useNavigate();
 
+  // Add name field, profile picture ref, interests?
   const handleSignUp = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then(async (userCredentials: any) => {
@@ -24,9 +23,8 @@ const Register = ({ user }: any) => {
         alert("Sign up successful.");
       })
       .catch((error) => {
-        alert(error.code);
+        alert(error);
         console.log(error);
-        return;
       });
   };
 
@@ -46,7 +44,7 @@ const Register = ({ user }: any) => {
             src="https://seeklogo.com/images/T/tinder-logo-FAAE852EC0-seeklogo.com.png"
             alt="tinder logo"
           />
-          <h1>Register your Tinder account!</h1>
+          <h1>Tell us about yourself!</h1>
         </div>
         <div className="flex flex-col py-[5vh]">
           <input
