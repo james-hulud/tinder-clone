@@ -1,39 +1,57 @@
 import React, { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase";
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
+import db, { auth } from "../firebase";
+import { doc, updateDoc } from "firebase/firestore";
+import { error } from "console";
 
-const Register = ({ user }: any) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const AddAccountDetails = ({ user }: any) => {
+  const [name, setName] = useState("");
 
   const navigate = useNavigate();
 
   // Add name field, profile picture ref, interests?
-  const handleSignUp = () => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then(async (userCredentials: any) => {
-        await addDoc(collection(db, "users"), {
-          uid: userCredentials.user.uid,
-          email: email,
-          password: password,
-          creationDate: Timestamp.fromDate(new Date()).toDate().toString(),
-        });
+  const handleAddDetails = () => {
+    // createUserWithEmailAndPassword(auth, name, password)
+    //   .then(async (userCredentials: any) => {
+    //     await addDoc(collection(db, "users"), {
+    //       uid: userCredentials.user.uid,
+    //       name: name,
+    //       password: password,
+    //       creationDate: Timestamp.fromDate(new Date()).toDate().toString(),
+    //     });
 
-        alert("Sign up successful.");
-      })
-      .catch((error) => {
-        alert(error);
-        console.log(error);
-      });
+    //     alert("Sign up successful.");
+    //   })
+    //   .catch((error) => {
+    //     alert(error);
+    //     console.log(error);
+    //   });
+
+    // const userRef = doc(db, "users", "")
+
+    // async (userCredentials: any) => {
+    //   await updateDoc(db, "users", )
+
+    // };
+
+    // HAVE SET DOC ID TO USERID, SO JUST NEED TO GET DOC BY USERID, ADD NAME FIELD AND DONE, THEN PROFILE PICTURE
+    // onAuthStateChanged(auth, (user) => {
+    //   if (user) {
+    //     console.log(user.uid);
+    //     return user.uid;
+    //   } else {
+    //     alert(error);
+    //     navigate("/");
+    //     return error;
+    //   }
+    // });
   };
 
-  const handleEmailChange = (event: any) => setEmail(event.target.value);
-  const handlePasswordChange = (event: any) => setPassword(event.target.value);
-
-  if (user) {
-    return <Navigate to="/home" />;
-  }
+  const handleNameChange = (event: any) => setName(event.target.value);
 
   return (
     <div className="flex flex-col justify-evenly m-0 h-[100vh] outline outline-red-500 items-center">
@@ -48,36 +66,17 @@ const Register = ({ user }: any) => {
         </div>
         <div className="flex flex-col py-[5vh]">
           <input
-            name="email"
+            name="name"
             type="text"
-            placeholder="example@example.com"
-            onChange={handleEmailChange}
+            placeholder="John Doe"
+            onChange={handleNameChange}
             className="outline-none outline-black rounded-md"
           />
-          <label htmlFor="formEmail">Email address</label>
-        </div>
-        <div className="flex flex-col">
-          <input
-            name="password"
-            type="password"
-            placeholder="password"
-            onChange={handlePasswordChange}
-            className="outline-none outline-black rounded-md"
-          />
-          <label htmlFor="formPassword">Password</label>
-        </div>
-        <div className="flex pt-[2vh] justify-evenly">
-          <div>
-            <input type="checkbox" value="" id="formCheck" />
-            <label htmlFor="formCheck">Remember me</label>
-          </div>
-          <button type="button" onClick={() => navigate("/")}>
-            Sign in
-          </button>
+          <label htmlFor="formName">Full name</label>
         </div>
         <div className="flex pt-[2vh] justify-center">
-          <button type="button" onClick={handleSignUp}>
-            Sign up
+          <button type="button" onClick={handleAddDetails}>
+            Finish!
           </button>
         </div>
       </form>
@@ -85,4 +84,4 @@ const Register = ({ user }: any) => {
   );
 };
 
-export default Register;
+export default AddAccountDetails;

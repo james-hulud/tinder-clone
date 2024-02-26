@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
-import { Timestamp, addDoc, collection } from "firebase/firestore";
+import { Timestamp, addDoc, collection, setDoc, doc } from "firebase/firestore";
 import db from "../firebase";
 
 const Register = ({ user }: any) => {
@@ -14,8 +14,9 @@ const Register = ({ user }: any) => {
   const handleSignUp = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then(async (userCredentials: any) => {
-        await addDoc(collection(db, "users"), {
-          uid: userCredentials.user.uid,
+        const userId: string = userCredentials.user.uid;
+        await setDoc(doc(db, "/users", userId), {
+          uid: userId,
           email: email,
           password: password,
           creationDate: Timestamp.fromDate(new Date()).toDate().toString(),

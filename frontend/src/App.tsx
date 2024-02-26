@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { auth } from "./firebase";
 import ProtectedRoute from "./auth/ProtectedRoute";
+import AddAccountDetails from "./pages/AddAccountDetails";
 
 function App() {
   const [user, setUser] = useState<User | null>(null);
@@ -51,6 +52,14 @@ function App() {
             element={
               <ProtectedRoute user={user}>
                 <Account />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/account-creation"
+            element={
+              <ProtectedRoute user={user}>
+                <AddAccountDetails />
               </ProtectedRoute>
             }
           />
