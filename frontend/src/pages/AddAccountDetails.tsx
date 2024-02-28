@@ -5,7 +5,7 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 import db, { auth } from "../firebase";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc, collection, setDoc } from "firebase/firestore";
 import { error } from "console";
 
 const AddAccountDetails = ({ user }: any) => {
@@ -39,20 +39,39 @@ const AddAccountDetails = ({ user }: any) => {
     // };
 
     // HAVE SET DOC ID TO USERID, SO JUST NEED TO GET DOC BY USERID, ADD NAME FIELD AND DONE, THEN PROFILE PICTURE
-    // onAuthStateChanged(auth, (user) => {
-    //   if (user) {
-    //     console.log(user.uid);
-    //     return user.uid;
-    //   } else {
-    //     alert(error);
-    //     navigate("/");
-    //     return error;
-    //   }
-    // });
+    const getUserId = new Promise((resolve, reject) => {
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+        if (user) {
+          resolve(user.uid);
+        } else {
+          reject("User not authenticated");
+        }
+        unsubscribe();
+      });
+    });
+
+    const uploadDetails = async (uid: any, fullName: string) => {
+      const userRef = doc(db, "users", uid);
+      await updateDoc(userRef, { name: fullName });
+      console.log("Value set!");
+    };
+
+    getUserId
+      .then((uid) => {
+        uploadDetails(uid, name);
+        alert("Name set successfully!");
+        navigate("/home");
+        return;
+      })
+      .catch((error) => {
+        alert("Error: " + error);
+        navigate("/");
+      });
   };
 
   const handleNameChange = (event: any) => setName(event.target.value);
 
+  // COULD JUST ADD FIELD AS A PATH TO AN IMAGE FOR NOW, INSTEAD OF A FILE UPLOAD
   return (
     <div className="flex flex-col justify-evenly m-0 h-[100vh] outline outline-red-500 items-center">
       <form>

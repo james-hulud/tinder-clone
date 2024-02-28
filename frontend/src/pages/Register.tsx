@@ -35,7 +35,7 @@ const Register = ({ user }: any) => {
   const handlePasswordChange = (event: any) => setPassword(event.target.value);
 
   if (user) {
-    return <Navigate to="/home" />;
+    return <Navigate to="/account-creation" />;
   }
 
   return (
