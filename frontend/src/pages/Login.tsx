@@ -3,12 +3,13 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
+import { useAuth } from "../auth/AuthContext";
 
-const Login = ({ user }: any) => {
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const navigate = useNavigate();
+  const { user, isFetching } = useAuth();
 
   const handleLogin = () => {
     signInWithEmailAndPassword(auth, email, password)

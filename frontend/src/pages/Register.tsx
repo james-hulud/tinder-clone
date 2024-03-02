@@ -4,10 +4,12 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 import { Timestamp, addDoc, collection, setDoc, doc } from "firebase/firestore";
 import db from "../firebase";
+import { useAuth } from "../auth/AuthContext";
 
-const Register = ({ user }: any) => {
+const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { user, isFetching } = useAuth();
 
   const navigate = useNavigate();
 
@@ -15,7 +17,7 @@ const Register = ({ user }: any) => {
     createUserWithEmailAndPassword(auth, email, password)
       .then(async (userCredentials: any) => {
         const userId: string = userCredentials.user.uid;
-        await setDoc(doc(db, "/users", userId), {
+        await setDoc(doc(db, "users", userId), {
           uid: userId,
           email: email,
           password: password,

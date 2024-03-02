@@ -7,41 +7,22 @@ import {
 import db, { auth } from "../firebase";
 import { doc, updateDoc, collection, setDoc } from "firebase/firestore";
 import { error } from "console";
+import { useAuth } from "../auth/AuthContext";
 
-const AddAccountDetails = ({ user }: any) => {
+const AddAccountDetails = () => {
   const [name, setName] = useState("");
+  const [url, setUrl] = useState("");
+  const [userId, setUserId] = useState("");
+  const { user, isFetching } = useAuth(); //??
 
   const navigate = useNavigate();
 
   // Add name field, profile picture ref, interests?
   const handleAddDetails = () => {
-    // createUserWithEmailAndPassword(auth, name, password)
-    //   .then(async (userCredentials: any) => {
-    //     await addDoc(collection(db, "users"), {
-    //       uid: userCredentials.user.uid,
-    //       name: name,
-    //       password: password,
-    //       creationDate: Timestamp.fromDate(new Date()).toDate().toString(),
-    //     });
-
-    //     alert("Sign up successful.");
-    //   })
-    //   .catch((error) => {
-    //     alert(error);
-    //     console.log(error);
-    //   });
-
-    // const userRef = doc(db, "users", "")
-
-    // async (userCredentials: any) => {
-    //   await updateDoc(db, "users", )
-
-    // };
-
-    // HAVE SET DOC ID TO USERID, SO JUST NEED TO GET DOC BY USERID, ADD NAME FIELD AND DONE, THEN PROFILE PICTURE
     const getUserId = new Promise((resolve, reject) => {
       const unsubscribe = onAuthStateChanged(auth, (user) => {
         if (user) {
+          setUserId(user.uid);
           resolve(user.uid);
         } else {
           reject("User not authenticated");
@@ -50,15 +31,17 @@ const AddAccountDetails = ({ user }: any) => {
       });
     });
 
-    const uploadDetails = async (uid: any, fullName: string) => {
+    const uploadDetails = async (uid: any, fullName: string, url: string) => {
       const userRef = doc(db, "users", uid);
-      await updateDoc(userRef, { name: fullName });
-      console.log("Value set!");
+      await updateDoc(userRef, {
+        name: fullName,
+        url: url,
+      });
     };
 
     getUserId
       .then((uid) => {
-        uploadDetails(uid, name);
+        uploadDetails(uid, name, url);
         alert("Name set successfully!");
         navigate("/home");
         return;
@@ -67,9 +50,14 @@ const AddAccountDetails = ({ user }: any) => {
         alert("Error: " + error);
         navigate("/");
       });
+
+    const id = userId;
+    console.log("User id var:");
+    console.log(id);
   };
 
   const handleNameChange = (event: any) => setName(event.target.value);
+  const handleUrlChange = (event: any) => setUrl(event.target.value);
 
   // COULD JUST ADD FIELD AS A PATH TO AN IMAGE FOR NOW, INSTEAD OF A FILE UPLOAD
   return (
@@ -92,6 +80,16 @@ const AddAccountDetails = ({ user }: any) => {
             className="outline-none outline-black rounded-md"
           />
           <label htmlFor="formName">Full name</label>
+        </div>
+        <div className="flex flex-col py-[5vh]">
+          <input
+            name="url"
+            type="text"
+            placeholder="https://an/image/url.jpg"
+            onChange={handleUrlChange}
+            className="outline-none outline-black rounded-md"
+          />
+          <label htmlFor="formName">Profile picture url</label>
         </div>
         <div className="flex pt-[2vh] justify-center">
           <button type="button" onClick={handleAddDetails}>
