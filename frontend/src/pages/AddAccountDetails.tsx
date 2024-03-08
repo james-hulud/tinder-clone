@@ -7,9 +7,13 @@ import {
 import db, { auth } from "../firebase";
 import { doc, updateDoc, collection, setDoc } from "firebase/firestore";
 import { useAuth } from "../auth/AuthContext";
+import { storage } from "../firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { Avatar } from "@mui/material";
 
 const AddAccountDetails = () => {
   const [name, setName] = useState("");
+  const [image, setImage] = useState(null);
   const [url, setUrl] = useState("");
   const { user, isFetching, userId } = useAuth();
 
@@ -19,9 +23,26 @@ const AddAccountDetails = () => {
   const handleAddDetails = () => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        uploadDetails(userId, name, url);
-        alert("Name set successfully!");
-        navigate("/home");
+        const imageRef = ref(storage, userId);
+        if (image) {
+          uploadBytes(imageRef, image) // maybe image as File, but does not make difference
+            .then(() => {
+              getDownloadURL(imageRef)
+                .then((url: any) => {
+                  setUrl(url);
+                  // UPLOAD TO CLOUD FIRESTORE HERE
+                  console.log("url here", url);
+                  uploadDetails(userId, name, url);
+                })
+                .catch((error: any) => {
+                  console.log(error.message, "error getting the image url");
+                });
+              setUrl("");
+            })
+            .catch((error: any) => {
+              console.log(error.message, "error with uploading image");
+            });
+        }
       } else {
         alert("User not authenticated");
       }
@@ -38,7 +59,17 @@ const AddAccountDetails = () => {
   };
 
   const handleNameChange = (event: any) => setName(event.target.value);
-  const handleUrlChange = (event: any) => setUrl(event.target.value);
+  const handleImageChange = (event: any) => {
+    const file = event.target.files[0];
+    if (file) {
+      setImage(file);
+    }
+  };
+
+  const confirmDetails = (event: any) => {
+    alert("Name set successfully!");
+    navigate("/home");
+  };
 
   return (
     <div className="flex flex-col justify-evenly m-0 h-[100vh] outline outline-red-500 items-center">
@@ -61,19 +92,24 @@ const AddAccountDetails = () => {
           />
           <label htmlFor="formName">Full name</label>
         </div>
+        <div className="flex items-center justify-center">
+          <Avatar alt="user" src={url} sx={{ width: 200, height: 200 }} />
+        </div>
         <div className="flex flex-col py-[5vh]">
           <input
-            name="url"
-            type="text"
-            placeholder="https://an/image/url.jpg"
-            onChange={handleUrlChange}
+            name="profile-image"
+            type="file"
+            onChange={handleImageChange}
             className="outline-none outline-black rounded-md"
           />
-          <label htmlFor="formName">Profile picture url</label>
+          <label htmlFor="formName">Profile image</label>
+          <button type="button" onClick={handleAddDetails}>
+            Submit
+          </button>
         </div>
         <div className="flex pt-[2vh] justify-center">
-          <button type="button" onClick={handleAddDetails}>
-            Finish!
+          <button type="button" onClick={confirmDetails}>
+            Confirm
           </button>
         </div>
       </form>

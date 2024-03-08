@@ -3,6 +3,7 @@ import TinderCard from "react-tinder-card";
 import db from "../firebase";
 import { collection, onSnapshot } from "firebase/firestore";
 import { useAuth } from "../auth/AuthContext";
+import { storage } from "../firebase";
 
 interface Person {
   name: string;
@@ -47,6 +48,7 @@ const TinderCards = () => {
           >
             {/* 1:22:05 mark for below className */}
             <div
+              // style={{ backgroundImage: `url(${person.url})` }}
               style={{ backgroundImage: `url(${person.url})` }}
               // Edit w and h properties accordingly
               className="relative w-[60vh] max-w-[85vw] h-[65vh] p-5 object-contain rounded-[20px] bg-cover bg-center shadow-2xl"
