@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import TinderCard from "react-tinder-card";
 import db from "../firebase";
 import { collection, onSnapshot } from "firebase/firestore";
+import { useAuth } from "../auth/AuthContext";
 
 interface Person {
   name: string;
@@ -11,18 +12,19 @@ interface Person {
 const TinderCards = () => {
   // const people = []
   const [people, setPeople] = useState<Person[]>([]);
+  const { userId } = useAuth();
 
   useEffect(() => {
     // Reference to "people" collection in Firestore
+    console.log(userId);
     const collectionRef = collection(db, "users");
 
     // Sets up a real-time listener for changes in the "people" collection
     const unsubscribe = onSnapshot(collectionRef, (snapshot) => {
       // When a change occurs, updates the state with the new data
-      
-      const updatedPeople = snapshot.docs.filter((doc) => doc.id != "userid here")
-
-      .map((doc) => doc.data() as Person);
+      const updatedPeople = snapshot.docs
+        .filter((doc) => doc.id != userId)
+        .map((doc) => doc.data() as Person);
       setPeople(updatedPeople);
     });
     // Cleanup function, detaches event listener when component is unmounted

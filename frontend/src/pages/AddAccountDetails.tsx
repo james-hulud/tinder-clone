@@ -6,29 +6,26 @@ import {
 } from "firebase/auth";
 import db, { auth } from "../firebase";
 import { doc, updateDoc, collection, setDoc } from "firebase/firestore";
-import { error } from "console";
 import { useAuth } from "../auth/AuthContext";
 
 const AddAccountDetails = () => {
   const [name, setName] = useState("");
   const [url, setUrl] = useState("");
-  const [userId, setUserId] = useState("");
-  const { user, isFetching } = useAuth(); //??
+  const { user, isFetching, userId } = useAuth();
 
   const navigate = useNavigate();
 
   // Add name field, profile picture ref, interests?
   const handleAddDetails = () => {
-    const getUserId = new Promise((resolve, reject) => {
-      const unsubscribe = onAuthStateChanged(auth, (user) => {
-        if (user) {
-          setUserId(user.uid);
-          resolve(user.uid);
-        } else {
-          reject("User not authenticated");
-        }
-        unsubscribe();
-      });
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        uploadDetails(userId, name, url);
+        alert("Name set successfully!");
+        navigate("/home");
+      } else {
+        alert("User not authenticated");
+      }
+      unsubscribe();
     });
 
     const uploadDetails = async (uid: any, fullName: string, url: string) => {
@@ -38,28 +35,11 @@ const AddAccountDetails = () => {
         url: url,
       });
     };
-
-    getUserId
-      .then((uid) => {
-        uploadDetails(uid, name, url);
-        alert("Name set successfully!");
-        navigate("/home");
-        return;
-      })
-      .catch((error) => {
-        alert("Error: " + error);
-        navigate("/");
-      });
-
-    const id = userId;
-    console.log("User id var:");
-    console.log(id);
   };
 
   const handleNameChange = (event: any) => setName(event.target.value);
   const handleUrlChange = (event: any) => setUrl(event.target.value);
 
-  // COULD JUST ADD FIELD AS A PATH TO AN IMAGE FOR NOW, INSTEAD OF A FILE UPLOAD
   return (
     <div className="flex flex-col justify-evenly m-0 h-[100vh] outline outline-red-500 items-center">
       <form>

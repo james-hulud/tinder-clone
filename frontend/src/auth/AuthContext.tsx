@@ -7,6 +7,7 @@ import { auth } from "../firebase";
 interface AuthContextProps {
   user: User | null;
   isFetching: boolean;
+  userId: string;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -24,11 +25,13 @@ export const AuthProvider: React.FC<{ children?: React.ReactNode }> = ({
 }: any) => {
   const [user, setUser] = useState<User | null>(null);
   const [isFetching, setIsFetching] = useState(true);
+  const [userId, setUserId] = useState("");
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser(user);
+        setUserId(user.uid);
         setIsFetching(false);
         return;
       }
@@ -46,6 +49,7 @@ export const AuthProvider: React.FC<{ children?: React.ReactNode }> = ({
   const value: AuthContextProps = {
     user,
     isFetching,
+    userId,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

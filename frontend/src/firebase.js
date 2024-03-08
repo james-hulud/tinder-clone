@@ -2,7 +2,8 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
-import { getAuth } from "firebase/auth"
+import { getAuth } from "firebase/auth";
+import { getStorage } from "firebase/storage";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -16,7 +17,7 @@ const firebaseConfig = {
   storageBucket: "tinder-clone-1e555.appspot.com",
   messagingSenderId: "368408062061",
   appId: "1:368408062061:web:da762f2950a7aabb62f764",
-  measurementId: "G-20CD5PYL9Y"
+  measurementId: "G-20CD5PYL9Y",
 };
 
 // Initialize Firebase
@@ -24,5 +25,6 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const db = getFirestore(app);
 export const auth = getAuth(app);
+export const storage = getStorage(app);
 
 export default db;

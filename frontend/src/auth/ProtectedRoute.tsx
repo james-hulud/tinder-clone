@@ -4,7 +4,7 @@ import { useAuth } from "./AuthContext";
 
 
 const ProtectedRoute = ({ children }: any) => {
-  const { user, isFetching } = useAuth();
+  const { user } = useAuth();
   return user ? children : <Navigate to="/"></Navigate>;
 };
 
